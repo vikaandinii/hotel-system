@@ -68,41 +68,53 @@ class ReservasiController extends Controller
     
 
 
-    public function store(Request $request)
-    {
-        // Validasi input
-        $request->validate([
-            'id_tamu' => 'required|exists:tamus,id_tamu',
-            'id_kamars' => 'required|array',
-            'tanggal_checkin' => 'required|date',
-            'tanggal_checkout' => 'required|date|after:tanggal_checkin',
-            'total_harga' => 'required|numeric',
-            'payment_method' => 'required|string',
+public function store(Request $request)
+{
+    // Validasi input
+    $request->validate([
+        'id_tamu' => 'required|exists:tamus,id_tamu',
+        'id_kamars' => 'required|array',
+        'tanggal_checkin' => 'required|date',
+        'tanggal_checkout' => 'required|date|after:tanggal_checkin',
+        'total_harga' => 'required|numeric',
+        'payment_method' => 'required|string',
+    ]);
+
+    // Menyimpan data reservasi ke tabel reservasi
+    $reservasi = Reservasi::create([
+        'id_tamu' => $request->id_tamu,
+        'tanggal_checkin' => $request->tanggal_checkin,
+        'tanggal_checkout' => $request->tanggal_checkout,
+        'total_harga' => $request->total_harga,
+        'metode_pembayaran' => $request->payment_method,
+    ]);
+
+    // Menghitung jumlah hari menginap
+    $tanggalCheckin = new \DateTime($request->tanggal_checkin);
+    $tanggalCheckout = new \DateTime($request->tanggal_checkout);
+    $jumlahHari = $tanggalCheckin->diff($tanggalCheckout)->days;
+
+    // Menyimpan data detail kamar yang dipilih dan mengubah status kamar menjadi tidak tersedia
+    foreach ($request->id_kamars as $id_kamar) {
+        // Simpan detail reservasi kamar
+        DetailReservasi::create([
+            'id_reservasi' => $reservasi->id_reservasi,
+            'id_kamar' => $id_kamar,
+            'jumlah_hari' => $jumlahHari,
         ]);
 
-        // Menyimpan data reservasi ke tabel reservasi
-        $reservasi = Reservasi::create([
-            'id_tamu' => $request->id_tamu,
-            'tanggal_checkin' => $request->tanggal_checkin,
-            'tanggal_checkout' => $request->tanggal_checkout,
-            'total_harga' => $request->total_harga,
-            'metode_pembayaran' => $request->payment_method,
-        ]);
-
-        // Menyimpan data detail kamar yang dipilih
-        foreach ($request->id_kamars as $id_kamar) {
-            $jumlahHari = (new \DateTime($request->tanggal_checkin))
-                ->diff(new \DateTime($request->tanggal_checkout))->days;
-
-            DetailReservasi::create([
-                'id_reservasi' => $reservasi->id_reservasi,
-                'id_kamar' => $id_kamar,
-                'jumlah_hari' => $jumlahHari,
-            ]);
+        // Perbarui status kamar menjadi tidak tersedia
+        $kamar = Kamar::find($id_kamar);
+        if ($kamar) {
+            $kamar->status_kamar = 'tidak tersedia'; 
+            $kamar->save();
         }
-
-        return redirect()->route('payment.result')->with('success', 'Reservasi berhasil dibuat!');
     }
+
+
+    return redirect()->route('payment.result')->with('success', 'Reservasi berhasil dibuat!');
+}
+
 
 
 
