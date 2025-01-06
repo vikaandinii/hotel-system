@@ -36,7 +36,7 @@ class DetailReservasiController extends Controller
         }
         return response()->json($detailReservasi);
     }
-
+/*
     public function store(Request $request)
     {
         $request->validate([
@@ -56,7 +56,7 @@ class DetailReservasiController extends Controller
         return response()->json($detailReservasi, 201);
     }
 
-
+*/
     /*
     public function update(Request $request, $id)
     {

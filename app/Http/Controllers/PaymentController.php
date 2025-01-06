@@ -48,22 +48,5 @@ class PaymentController extends Controller
         return view('payment.result', compact('paymentMethod', 'totalHarga'));
     }
 
-
-
-
-public function printReceipt()
-{
-    // Ambil data dari session yang sudah disimpan sebelumnya
-    $tamu = session('tamu');
-    $tanggalCheckin = session('tanggalCheckin');
-    $tanggalCheckout = session('tanggalCheckout');
-    $jumlahTamu = session('jumlahTamu');
-    $paymentMethod = session('payment_method');
-    $totalHarga = session('totalHarga');
-
-    // Kirim data ke view receipt
-    return view('payment.receipt', compact('tamu', 'tanggalCheckin', 'tanggalCheckout', 'jumlahTamu', 'paymentMethod', 'totalHarga'));
-}
-
     
 }

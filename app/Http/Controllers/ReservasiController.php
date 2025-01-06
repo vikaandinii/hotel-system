@@ -102,7 +102,6 @@ public function store(Request $request)
             'id_kamar' => $id_kamar,
             'jumlah_hari' => $jumlahHari,
         ]);
-<<<<<<< HEAD
 
         // Perbarui status kamar menjadi tidak tersedia
         $kamar = Kamar::find($id_kamar);
@@ -110,42 +109,6 @@ public function store(Request $request)
             $kamar->status_kamar = 'tidak tersedia'; 
             $kamar->save();
         }
-=======
-    
-        // Menyimpan data reservasi ke tabel reservasi
-        $reservasi = Reservasi::create([
-            'id_tamu' => $request->id_tamu,
-            'tanggal_checkin' => $request->tanggal_checkin,
-            'tanggal_checkout' => $request->tanggal_checkout,
-            'total_harga' => $request->total_harga,
-            'metode_pembayaran' => $request->payment_method,
-        ]);
-    
-        // Menghitung jumlah hari menginap
-        $tanggalCheckin = new \DateTime($request->tanggal_checkin);
-        $tanggalCheckout = new \DateTime($request->tanggal_checkout);
-        $jumlahHari = $tanggalCheckin->diff($tanggalCheckout)->days;
-    
-        // Menyimpan data detail kamar yang dipilih dan mengubah status kamar menjadi tidak tersedia
-        foreach ($request->id_kamars as $id_kamar) {
-            // Simpan detail reservasi kamar
-            DetailReservasi::create([
-                'id_reservasi' => $reservasi->id_reservasi,
-                'id_kamar' => $id_kamar,
-                'jumlah_hari' => $jumlahHari,
-            ]);
-    
-            // Perbarui status kamar menjadi tidak tersedia
-            $kamar = Kamar::find($id_kamar);
-            if ($kamar) {
-                $kamar->status_kamar = 'tidak tersedia'; 
-                $kamar->save();
-            }
-        }
-    
-    
-        return redirect()->route('payment.result')->with('success', 'Reservasi berhasil dibuat!');
->>>>>>> f9b4854038fdcd7e8cb4d9292c7f951813299edc
     }
 
 
@@ -224,7 +187,7 @@ public function checkout(Request $request)
 
 
 
-public function showCheckout()
+/*public function showCheckout()
 {
     // Ambil data dari session
     $data = session('checkout_data');
@@ -251,8 +214,7 @@ public function showCheckout()
     ]);
 }
 
-
-
+*/
 
 
 }
