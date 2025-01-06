@@ -10,31 +10,24 @@ use App\Models\Tamu;
 
 class DetailReservasiController extends Controller
 {
-    /**
-     * Menampilkan semua detail reservasi
-     */
-public function index(Request $request)
-{
-    $search = $request->input('search');
-    
-    // Mengambil data reservasi yang diurutkan berdasarkan tanggal check-in terbaru
-    $reservasiDetail = Reservasi::with(['tamu', 'detailReservasi.kamar'])
-        ->when($search, function($query, $search) {
-            return $query->whereHas('tamu', function($q) use ($search) {
-                $q->where('nama_tamu', 'like', '%' . $search . '%')
-                  ->orWhere('email', 'like', '%' . $search . '%');
-            });
-        })
-        ->orderBy('tanggal_checkin', 'desc') // Mengurutkan berdasarkan tanggal check-in terbaru
-        ->get();
+    public function index(Request $request)
+    {
+        $search = $request->input('search');
+        
+        $reservasiDetail = Reservasi::with(['tamu', 'detailReservasi.kamar'])
+            ->when($search, function($query, $search) {
+                return $query->whereHas('tamu', function($q) use ($search) {
+                    $q->where('nama_tamu', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+                });
+            })
+            ->orderBy('tanggal_checkin', 'desc') 
+            ->get();
 
-    return view('detail_reservasi.index', compact('reservasiDetail', 'search'));
-}
+        return view('detail_reservasi.index', compact('reservasiDetail', 'search'));
+    }
 
 
-    /**
-     * Menampilkan detail reservasi tertentu
-     */
     public function show($id)
     {
         $detailReservasi = DetailReservasi::with('reservasi', 'kamar')->find($id);
@@ -44,9 +37,6 @@ public function index(Request $request)
         return response()->json($detailReservasi);
     }
 
-    /**
-     * Membuat detail reservasi baru
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -66,9 +56,8 @@ public function index(Request $request)
         return response()->json($detailReservasi, 201);
     }
 
-    /**
-     * Mengupdate detail reservasi tertentu
-     */
+
+    /*
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -92,22 +81,21 @@ public function index(Request $request)
 
         return response()->json($detailReservasi);
     }
+*/
 
-    /**
-     * Menghapus detail reservasi
-     */
-public function destroy($id)
-{
-    $reservasi = Reservasi::with('detailReservasi')->findOrFail($id);
+    /*
+    public function destroy($id)
+    {
+        $reservasi = Reservasi::with('detailReservasi')->findOrFail($id);
 
-    // Hapus detail reservasi terkait
-    $reservasi->detailReservasi()->delete();
+        // Hapus detail reservasi terkait
+        $reservasi->detailReservasi()->delete();
 
-    // Hapus reservasi
-    $reservasi->delete();
+        // Hapus reservasi
+        $reservasi->delete();
 
-    return redirect()->route('reservasi.index')->with('success', 'Reservasi berhasil dihapus.');
-}
-
+        return redirect()->route('reservasi.index')->with('success', 'Reservasi berhasil dihapus.');
+    }
+*/
 }
 

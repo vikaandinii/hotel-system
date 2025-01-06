@@ -112,7 +112,12 @@ public function store(Request $request)
     }
 
 
-    return redirect()->route('payment.result')->with('success', 'Reservasi berhasil dibuat!');
+return redirect()->route('payment.result')->with([
+    'success' => 'Reservasi berhasil dibuat!',
+    'reservasi' => $reservasi, // Menyertakan data reservasi
+    'kamars' => $request->id_kamars, // Kamar yang dipesan
+    'totalHarga' => $request->total_harga, // Total harga
+]);
 }
 
 

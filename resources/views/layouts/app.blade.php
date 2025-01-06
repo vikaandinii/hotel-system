@@ -20,10 +20,13 @@
             <li><a href="{{ route('detailReservasi.index') }}" class="hover:underline">Detail Reservasi</a></li>
         </ul>
         <!-- Info Admin -->
-        <div class="text-sm">
-            <span>Admin</span>
-            <a href="{{ route('logout') }}" class="hover:underline text-red-500 ml-2">Logout</a>
-        </div>
+        <form action="{{ route('logout') }}" method="POST" style="display: inline;">
+            @csrf
+            <button type="submit" class="hover:underline text-red-500 ml-2 bg-transparent border-none cursor-pointer">
+                Logout
+            </button>
+        </form>
+
     </nav>
 
     <!-- Content -->

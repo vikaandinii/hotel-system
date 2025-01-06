@@ -8,12 +8,10 @@ use Illuminate\Support\Facades\Storage;
 
 class KamarController extends Controller
 {
-    // Menampilkan daftar kamar dengan pencarian dan pagination
     public function index(Request $request)
     {
         $query = Kamar::query();
 
-        // Jika ada pencarian
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where('nomor_kamar', 'like', "%{$search}%")
@@ -21,19 +19,18 @@ class KamarController extends Controller
                 ->orWhere('status_kamar', 'like', "%{$search}%");
         }
 
-        // Menggunakan pagination
-        $kamars = $query->paginate(10); // Menampilkan 10 data per halaman
+        $kamars = $query->paginate(100);
 
         return view('kamar.index', compact('kamars'));
     }
 
-    // Menampilkan form untuk menambah kamar baru
+
     public function create()
     {
         return view('kamar.create');
     }
 
-    // Menyimpan data kamar baru
+
     public function store(Request $request)
     {
         // Validasi form
@@ -43,15 +40,14 @@ class KamarController extends Controller
             'harga_per_malam' => 'required|numeric',
             'status_kamar' => 'required|string|max:255',
             'kapasitas_kamar' => 'required|integer',
-            'gambar_kamar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // validasi gambar
+            'gambar_kamar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 
         // Proses penyimpanan gambar
+        $gambar_path = null;
         if ($request->hasFile('gambar_kamar')) {
             $gambar = $request->file('gambar_kamar');
-            $gambar_path = $gambar->store('public/gambar_kamar'); // Menyimpan gambar di folder public/gambar_kamar
-        } else {
-            $gambar_path = null;
+            $gambar_path = $gambar->store('gambar_kamar', 'public'); 
         }
 
         // Simpan data kamar ke database
@@ -61,27 +57,20 @@ class KamarController extends Controller
             'harga_per_malam' => $validated['harga_per_malam'],
             'status_kamar' => $validated['status_kamar'],
             'kapasitas_kamar' => $validated['kapasitas_kamar'],
-            'gambar_kamar' => $gambar_path, // Menyimpan path gambar
+            'gambar_kamar' => $gambar_path, 
         ]);
 
         return redirect()->route('kamar.index')->with('success', 'Kamar berhasil disimpan.');
     }
 
+
     public function edit($id)
     {
-        // If using the default 'id' as primary key
-        $kamars = Kamar::findOrFail($id);  // Find the record by id
-
-        // If using 'id_kamar' as primary key
-        // $kamar = Kamar::where('id_kamar', $id)->firstOrFail();
+        $kamars = Kamar::findOrFail($id);  
 
         return view('kamar.edit', compact('kamars'));
     }
 
-    public function keranjangs()
-    {
-        return $this->hasMany(Keranjang::class);
-    }
 
     public function update(Request $request, $id_kamar)
     {
@@ -120,7 +109,6 @@ class KamarController extends Controller
     }
 
 
-    // Menghapus data kamar
     public function destroy($id)
     {
         $kamars = Kamar::findOrFail($id);

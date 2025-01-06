@@ -1,6 +1,7 @@
 @extends('layouts.app')
 @vite('resources/css/app.css')
 
+@section('title', 'Halaman Kamar')
 @section('content')
 <div class="relative">
     <!-- Latar belakang dengan gambar yang tetap di tempat saat di-scroll -->
@@ -10,9 +11,9 @@
     <div class="relative container mx-auto mt-12 p-8 rounded-lg shadow-lg max-w-6xl bg-white bg-opacity-85">
         <!-- Tombol Tambah Kamar -->
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-3xl font-semibold text-brown-800">Daftar Kamar</h2>
+            <h2 class="text-3xl font-semibold text-brown-800">Daftar Kamar Hotel</h2>
             <a href="{{ route('kamar.create') }}" class="px-6 py-3 bg-brown-600 text-white font-semibold rounded-lg shadow-md hover:bg-brown-700 focus:outline-none focus:ring-2 focus:ring-brown-500">
-                Tambah Kamar
+                Menambah Kamar
             </a>
         </div>
 

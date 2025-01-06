@@ -17,7 +17,7 @@ class PaymentController extends Controller
             'tanggal_checkin' => 'required|date_format:Y-m-d H:i:s', 
             'tanggal_checkout' => 'required|date_format:Y-m-d H:i:s|after:tanggal_checkin',
             'total_harga' => 'required|numeric',  
-            'payment_method' => 'required|string',
+            'metode_pembayaran' => 'required|string',
         ]);
     
         // Simulate storing the data
@@ -29,7 +29,7 @@ class PaymentController extends Controller
             'metode_pembayaran' => $request->payment_method,
         ]);
     
-        // Redirect ke halaman hasil pembayaran dengan data yang dikirim
+        // Redirect ke halaman hasil pembayaran dengan data yang dikirim.
     return redirect()->route('payment.result', [
         'paymentMethod' => $request->payment_method,
         'totalHarga' => $request->total_harga,

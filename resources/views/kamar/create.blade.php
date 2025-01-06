@@ -39,8 +39,7 @@
                 <label for="status_kamar" class="block text-gray-700 font-semibold mb-2">Status Kamar</label>
                 <select id="status_kamar" name="status_kamar" class="w-full px-4 py-3 mt-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-600" required>
                     <option value="Tersedia" {{ old('status_kamar') == 'Tersedia' ? 'selected' : '' }}>Tersedia</option>
-                    <option value="Dipesan" {{ old('status_kamar') == 'Dipesan' ? 'selected' : '' }}>Dipesan</option>
-                    <option value="Dibatalkan" {{ old('status_kamar') == 'Dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
+                    <option value="Dipesan" {{ old('status_kamar') == 'Tidak Tersedia' ? 'selected' : '' }}>Tidak Tersedia</option>
                 </select>
             </div>
 

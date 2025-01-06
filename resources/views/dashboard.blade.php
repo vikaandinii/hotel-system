@@ -19,9 +19,25 @@
         background: rgba(255, 255, 255, 0.9);
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: relative;
     }
     .card img {
         border-radius: 8px 8px 0 0;
+    }
+    .status {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        padding: 5px 10px;
+        border-radius: 8px;
+        font-weight: bold;
+        color: white;
+    }
+    .status-tersedia {
+        background-color: #28a745; /* Green for available */
+    }
+    .status-tidak-tersedia {
+        background-color: #dc3545; /* Red for not available */
     }
     .btn-primary {
         background: #964B00;
@@ -44,56 +60,27 @@
             <p class="text-lg mt-2">Pilih kamar terbaik untuk pengalaman menginap yang tak terlupakan</p>
         </div>
 
-        <!-- Form Pencarian -->
-        <form action="{{ route('reservasi.create', ['id_tamu' => $tamu->id_tamu]) }}" method="GET" class="card p-6 mb-8">
-            <h2 class="text-xl font-semibold mb-4">Cari Kamar</h2>
-            <div class="grid grid-cols-3 gap-4">
-                <div>
-                    <label for="checkin" class="block text-sm font-medium">Tanggal Check-in</label>
-                    <input type="date" name="checkin" id="checkin" class="mt-1 block w-full border-gray-300 rounded-md" value="{{ old('checkin') }}" required>
-                </div>
-                <div>
-                    <label for="checkout" class="block text-sm font-medium">Tanggal Check-out</label>
-                    <input type="date" name="checkout" id="checkout" class="mt-1 block w-full border-gray-300 rounded-md" value="{{ old('checkout') }}" required>
-                </div>
-                <div>
-                    <label for="jumlah_orang" class="block text-sm font-medium">Jumlah Orang</label>
-                    <select name="jumlah_orang" id="jumlah_orang" class="mt-1 block w-full border-gray-300 rounded-md">
-                        <option value="1">1 Orang Dewasa</option>
-                        <option value="3">2 Dewasa + 1 Anak</option>
-                        <option value="4">4 Orang Dewasa</option>
-                    </select>
-                </div>
-            </div>
-            <button type="submit" class="btn-primary mt-4">Cari Kamar</button>
-        </form>
-
         <!-- Menampilkan Kamar -->
         @if($kamarTersedia->isEmpty())
-            <p class="text-center text-white">Tidak ada kamar tersedia untuk tanggal tersebut.</p>
+            <p class="text-center text-white">Tidak ada kamar yang tersedia saat ini.</p>
         @else
-            <form action="{{ route('reservasi.index') }}" method="GET">
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                    @foreach ($kamarTersedia as $kamar)
-                        <div class="card overflow-hidden">
-                            <img src="{{ asset('storage/' . $kamar->gambar_kamar) }}" alt="Kamar {{ $kamar->nomor_kamar }}" class="w-full h-48 object-cover">
-                            <div class="p-4">
-                                <h3 class="text-lg font-bold text-gray-800">Kamar {{ $kamar->nomor_kamar }}</h3>
-                                <p class="text-gray-600">Jenis: {{ ucfirst($kamar->jenis_kamar) }}</p>
-                                <p class="text-gray-600">Harga: Rp{{ number_format($kamar->harga_per_malam, 0, ',', '.') }}/malam</p>
-                                <p class="text-gray-600">Kapasitas: {{ $kamar->kapasitas_kamar }} Orang</p>
-                                <div class="mt-4">
-                                    <input type="checkbox" name="kamar_ids[]" value="{{ $kamar->id }}" id="kamar_{{ $kamar->id }}" class="form-checkbox">
-                                    <label for="kamar_{{ $kamar->id }}" class="ml-2 text-sm text-gray-800">Pilih Kamar</label>
-                                </div>
-                            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                @foreach ($kamarTersedia as $kamar)
+                    <div class="card overflow-hidden">
+                        <!-- Status Kamar -->
+                        <div class="status {{ $kamar->status_kamar === 'Tersedia' ? 'status-tersedia' : 'status-tidak-tersedia' }}">
+                            {{ $kamar->status_kamar }}
                         </div>
-                    @endforeach
-                </div>
-                <div class="text-center mt-8">
-                    <button type="submit" class="btn-primary">Reservasi Kamar</button>
-                </div>
-            </form>
+                        <img src="{{ asset('storage/' . $kamar->gambar_kamar) }}" alt="Kamar {{ $kamar->nomor_kamar }}" class="w-full h-48 object-cover">
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-gray-800">Kamar {{ $kamar->nomor_kamar }}</h3>
+                            <p class="text-gray-600">Jenis: {{ ucfirst($kamar->jenis_kamar) }}</p>
+                            <p class="text-gray-600">Harga: Rp{{ number_format($kamar->harga_per_malam, 0, ',', '.') }}/malam</p>
+                            <p class="text-gray-600">Kapasitas: {{ $kamar->kapasitas_kamar }} Orang</p>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
         @endif
     </div>
 </div>

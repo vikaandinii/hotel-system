@@ -13,7 +13,7 @@
 
     <!-- Main Content -->
     <div class="container mx-auto py-10 px-4 relative z-10">
-        <h1 class="text-3xl font-bold text-center text-white mb-8">Daftar Kamar dan Fasilitas</h1>
+        <h1 class="text-3xl font-bold text-center text-white mb-8">Daftar Kamar dan Beserta Fasilitas di Dalamnya</h1>
 
         <!-- Search Form -->
         <form method="GET" action="{{ route('kamardanfasilitas.index') }}" class="mb-6">
@@ -43,8 +43,8 @@
                     <div class="relative h-56">
                         <!-- Status Kamar -->
                         <div class="absolute top-2 left-2 bg-opacity-75 px-3 py-1 rounded-br-lg text-white text-sm font-semibold
-                            {{ $kamar->status_kamar === 'Available' ? 'bg-green-500' : 'bg-red-500' }}">
-                            {{ $kamar->status_kamar === 'Available' ? 'Available' : 'Not Available' }}
+                            {{ $kamar->status_kamar === 'Tersedia' ? 'bg-green-500' : 'bg-red-500' }}">
+                            {{ $kamar->status_kamar === 'Tersedia' ? 'Tersedia' : 'Tidak Tersedia' }}
                         </div>
                         <img src="{{ asset('storage/' . $kamar->gambar_kamar) }}" alt="Gambar Kamar" class="w-full h-full object-cover">
                     </div>
