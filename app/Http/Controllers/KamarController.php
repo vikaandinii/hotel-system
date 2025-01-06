@@ -43,14 +43,12 @@ class KamarController extends Controller
             'gambar_kamar' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', 
         ]);
 
-        // Proses penyimpanan gambar
         $gambar_path = null;
         if ($request->hasFile('gambar_kamar')) {
             $gambar = $request->file('gambar_kamar');
             $gambar_path = $gambar->store('gambar_kamar', 'public'); 
         }
 
-        // Simpan data kamar ke database
         Kamar::create([
             'nomor_kamar' => $validated['nomor_kamar'],
             'jenis_kamar' => $validated['jenis_kamar'],
@@ -91,14 +89,13 @@ class KamarController extends Controller
         $kamar->harga_per_malam = $request->input('harga_per_malam');
         $kamar->status_kamar = $request->input('status_kamar');
 
-        // Menangani file gambar kamar (jika ada)
+
         if ($request->hasFile('gambar_kamar')) {
-            // Hapus gambar lama jika ada
+
             if ($kamar->gambar_kamar) {
                 Storage::delete('public/' . $kamar->gambar_kamar);
             }
 
-            // Simpan gambar baru
             $path = $request->file('gambar_kamar')->store('kamars', 'public');
             $kamar->gambar_kamar = $path;
         }
@@ -113,12 +110,10 @@ class KamarController extends Controller
     {
         $kamars = Kamar::findOrFail($id);
 
-        // Hapus gambar dari storage
         if ($kamars->gambar_kamar) {
             Storage::disk('public')->delete($kamars->gambar_kamar);
         }
 
-        // Hapus data kamar
         $kamars->delete();
 
         return redirect()->route('kamar.index')->with('success', 'Kamar berhasil dihapus!');
