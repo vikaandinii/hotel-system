@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateFasilitasKamarsTable extends Migration
 {
-    /*
+
     public function up()
     {
         Schema::create('fasilitas_kamars', function (Blueprint $table) {
@@ -20,6 +20,6 @@ class CreateFasilitasKamarsTable extends Migration
     {
         Schema::dropIfExists('fasilitas_kamars');
     }
-    */
+
 }
 

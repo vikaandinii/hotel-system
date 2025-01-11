@@ -19,17 +19,11 @@ class DetailReservasi extends Model
     ];
     
 
-    /**
-     * Relasi dengan model Reservasi
-     */
     public function reservasi()
     {
         return $this->belongsTo(Reservasi::class, 'id_reservasi', 'id_reservasi');
     }
 
-    /**
-     * Relasi dengan model Kamar
-     */
     public function kamar()
     {
         return $this->belongsTo(Kamar::class, 'id_kamar', 'id');

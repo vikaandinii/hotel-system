@@ -6,7 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateKamarsTable extends Migration
 {
-    /*
     public function up()
     {
         Schema::create('kamars', function (Blueprint $table) {
@@ -16,15 +15,14 @@ class CreateKamarsTable extends Migration
             $table->decimal('harga_per_malam', 10, 2);
             $table->string('status_kamar');
             $table->integer('kapasitas_kamar');
-            $table->string('gambar_kamar')->nullable(); // gambar_kamar boleh kosong
+            $table->string('gambar_kamar')->nullable(); 
             $table->timestamps();
         });
-    } */
+    } 
 
-    /*
     public function down()
     {
         Schema::dropIfExists('kamars');
-    */
-}
+    }
 
+}

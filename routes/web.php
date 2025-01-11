@@ -27,14 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
-
-
-Route::resource('tamu', TamuController::class);
+    Route::resource('tamu', TamuController::class);
 Route::resource('kamar', KamarController::class);
 Route::resource('fasilitaskamar', FasilitasKamarController::class);
 Route::resource('fasilitas_kamar', FasilitasKamarController::class);
@@ -44,6 +37,14 @@ Route::resource('kamar-dan-fasilitas', KamarDanFasilitasController::class);
 Route::resource('kamardanfasilitas', KamarDanFasilitasController::class);
 Route::resource('detail_reservasi', DetailReservasiController::class);
 Route::resource('kamar', KamarController::class)->parameters(['kamar' => 'id_kamar']);
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->name('dashboard');
+
+
+
 
 Route::get('/kamar/search', [KamarController::class, 'search'])->name('kamar.search');
 Route::get('/dashboard/cari-kamar', [DashboardController::class, 'cariKamar'])->name('dashboard.cariKamar');
